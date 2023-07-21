@@ -6,6 +6,8 @@ import { UserButton } from "@clerk/nextjs";
 import { ArrowRight, Code2Icon, ImageIcon, MessageSquare, VideoIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Analytics } from '@vercel/analytics/react';
+
 
 const tools = [
     {
@@ -71,6 +73,7 @@ export default function Dashboard() {
                     ))}
                 </div>
             </div>
+            <Analytics />
         </div>
     )
 }

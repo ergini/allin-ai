@@ -23,6 +23,8 @@ import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { useProModal } from "@/hooks/useProModal";
 import { toast } from "react-hot-toast";
+import { Analytics } from '@vercel/analytics/react';
+
 
 export default function Code() {
     const proModal = useProModal()
@@ -205,6 +207,7 @@ export default function Code() {
                     </div>
                 </div>
             </div>
+            <Analytics />
         </div>
     )
 }

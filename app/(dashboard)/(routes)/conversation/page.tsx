@@ -23,6 +23,7 @@ import UserAvatar from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
 import { useProModal } from "@/hooks/useProModal";
 import { toast } from "react-hot-toast";
+import { Analytics } from '@vercel/analytics/react';
 
 export default function Conversation() {
     const proModal = useProModal()
@@ -129,6 +130,7 @@ export default function Conversation() {
                     </div>
                 </div>
             </div>
+            <Analytics />
         </div>
     )
 }

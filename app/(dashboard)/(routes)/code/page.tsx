@@ -24,6 +24,8 @@ import UserAvatar from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
 import { useProModal } from "@/hooks/useProModal";
 import { toast } from "react-hot-toast";
+import { Analytics } from '@vercel/analytics/react';
+
 
 export default function Code() {
     const proModal = useProModal()
@@ -142,6 +144,7 @@ export default function Code() {
                     </div>
                 </div>
             </div>
+            <Analytics />
         </div>
     )
 }

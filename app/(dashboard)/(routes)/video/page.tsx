@@ -18,6 +18,8 @@ import Empty from "@/components/Empty";
 
 import { formSchema } from "./constants";
 import { useProModal } from "@/hooks/useProModal";
+import { Analytics } from '@vercel/analytics/react';
+
 
 export default function Video() {
     const proModal = useProModal()
@@ -112,6 +114,7 @@ export default function Video() {
                     </video>
                 )}
             </div>
+            <Analytics />
         </div>
     );
 }
