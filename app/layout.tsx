@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -26,6 +27,7 @@ export default function RootLayout({
           <ModalProvider />
           <ToasterProvider />
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
