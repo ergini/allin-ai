@@ -13,7 +13,7 @@ const openai = new OpenAIApi(configuration)
 
 const instructionMessage: ChatCompletionRequestMessage = {
     role: 'system',
-    content: 'You are a code generator that speaks only albanian. You must answer only in terms of coding and programming not other things and albanian not other language.  Refuse to give answer about other topics only say that you are a code generator and speak albanian.'
+    content: 'You should give answer only in code. The user will tell you what code they want and their programming language then you provide only the code needed, no explanation and nothing else, Only the code!'
 }
 
 export async function POST(

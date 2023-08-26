@@ -25,39 +25,60 @@ import BotAvatar from "@/components/BotAvatar";
 import { useProModal } from "@/hooks/useProModal";
 import { toast } from "react-hot-toast";
 import { Analytics } from '@vercel/analytics/react';
+import { Select } from "@/components/ui/select";
+
+const programmingLanguages = [
+    'html',
+    'js',
+    'py',
+    'ts',
+    // Add more languages as needed
+];
 
 
 export default function Code() {
     const proModal = useProModal()
     const router = useRouter();
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+    const [generatedCode, setGeneratedCode] = useState<string | null>(null);
+    const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
+
+    const formSchema = z.object({
+        prompt: z.string(), // The prompt field
+        language: z.string(), // The language field
+    });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             prompt: "",
-        }
-    })
+            language: "", // Default value for the language field
+        },
+    });
+
 
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-
             const userMessage: ChatCompletionRequestMessage = {
                 role: 'user',
                 content: values.prompt,
-            }
+            };
+
             const newMessages = [...messages, userMessage];
 
             const response = await axios.post('/api/code', {
                 messages: newMessages,
-            })
+                language: values.language, // Include the selected programming language
+            });
 
-            setMessages((current) => [...current, userMessage, response.data])
+            setGeneratedCode(response.data.content);
+            setSelectedLanguage(values.language);
 
-            form.reset()
+            setMessages((current) => [...current, userMessage, response.data]);
 
+            form.reset();
         } catch (error: any) {
             if (error?.response?.status === 403) {
                 proModal.onOpen()
@@ -67,7 +88,8 @@ export default function Code() {
         } finally {
             router.refresh();
         }
-    }
+    };
+
 
     return (
         <div>
@@ -100,6 +122,30 @@ export default function Code() {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                name="language"
+                                render={({ field }) => (
+                                    <FormItem className='col-span-12 lg:col-span-10'>
+                                        <FormControl className="m-0 p-0">
+                                            <select
+                                                disabled={isLoading}
+                                                {...field}
+                                                className='border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent'
+                                            >
+                                                <option value="" disabled>
+                                                    Select a language
+                                                </option>
+                                                {programmingLanguages.map((language) => (
+                                                    <option key={language} value={language}>
+                                                        {language}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+
                             <Button className='col-span-12 lg:col-span-2 w-full' disabled={isLoading}>
                                 Generate
                             </Button>
@@ -141,6 +187,18 @@ export default function Code() {
                                 </ReactMarkdown>
                             </div>
                         ))}
+                    </div>
+                    <div className='flex flex-col gap-y-4'>
+                        {/* ... Other code messages ... */}
+                        {generatedCode && (
+                            <a
+                                href={`data:text/plain;charset=utf-8,${encodeURIComponent(generatedCode)}`}
+                                download={`generated_code.${selectedLanguage}`}
+                                className="block mt-4 text-center text-blue-500 underline"
+                            >
+                                Download Generated Code
+                            </a>
+                        )}
                     </div>
                 </div>
             </div>

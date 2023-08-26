@@ -13,7 +13,7 @@ const openai = new OpenAIApi(configuration)
 
 const instructionMessage: ChatCompletionRequestMessage = {
     role: 'system',
-    content: 'You should speak only albanian. You must answer every question only in albanian language. Speak with the me very respectfully and discuss different topics with very much interest.'
+    content: 'You should speak only albanian. You should ask questions to the user of how they want you to act. You should learn to act exactly as the user tells you to. Even name, age, anger, emotion, love, etc. You should learn to act exactly as the user tells you to.'
 }
 
 export async function POST(
