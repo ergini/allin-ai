@@ -27,13 +27,6 @@ import { toast } from "react-hot-toast";
 import { Analytics } from '@vercel/analytics/react';
 import { Select } from "@/components/ui/select";
 
-const programmingLanguages = [
-    'html',
-    'css',
-];
-
-
-
 
 export default function Code() {
     const proModal = useProModal()
@@ -51,7 +44,7 @@ export default function Code() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             prompt: "",
-            language: "", 
+            language: "html",
         },
     });
 
@@ -102,11 +95,11 @@ export default function Code() {
     return (
         <div>
             <Heading
-                title="Code Generation"
-                description="Generate code and solve problems with our AI."
+                title="Website Generation"
+                description="We'll help you generate a website!"
                 icon={Code2Icon}
-                iconColor="text-emerald-500"
-                bgColor="bg-emerald-500/10"
+                iconColor="text-yellow-500"
+                bgColor="bg-yellow-500/10"
             />
             <div className="px-4 lg:px-8">
                 <div>
@@ -130,30 +123,6 @@ export default function Code() {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                name="language"
-                                render={({ field }) => (
-                                    <FormItem className='col-span-12 lg:col-span-10'>
-                                        <FormControl className="m-0 p-0">
-                                            <select
-                                                disabled={isLoading}
-                                                {...field}
-                                                className='border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent'
-                                            >
-                                                <option value="" disabled>
-                                                    Select a language
-                                                </option>
-                                                {programmingLanguages.map((language) => (
-                                                    <option key={language} value={language}>
-                                                        {language}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-
                             <Button className='col-span-12 lg:col-span-2 w-full' disabled={isLoading}>
                                 Generate
                             </Button>
@@ -167,7 +136,7 @@ export default function Code() {
                         </div>
                     )}
                     {messages.length === 0 && !isLoading && (
-                        <Empty label="We'll help you code! Ask us..." />
+                        <Empty label="Ask us..." />
                     )}
                     <div className='flex flex-col gap-y-4'>
                         {messages.map((message) => (
@@ -178,25 +147,27 @@ export default function Code() {
                                 )}
                             >
                                 {message.role === 'user' ? <UserAvatar /> : <BotAvatar />}
-                                <ReactMarkdown
-                                    components={{
-                                        pre: ({ node, ...props }) => (
-                                            <div className="overflow-auto w-full my-2 bg-emerald-300/10 text-emerald-600 p-2 rounded-lg">
-                                                <pre {...props} />
-                                            </div>
-                                        ),
-                                        code: ({ node, ...props }) => (
-                                            <code className="bg-emerald-600/10 text-black rounded-lg p-1" {...props} />
-                                        ),
-                                    }}
-                                    className='text-sm overflow-hidden leading-7'
-                                >
-                                    {message.role === 'user' ? (message.content || '') : 'Generated code summary'}
-                                </ReactMarkdown>
+                                {message.role === 'user' ? (
+                                    <ReactMarkdown
+                                        components={{
+                                            pre: ({ node, ...props }) => (
+                                                <div className="overflow-auto w-full my-2 bg-emerald-300/10 text-emerald-600 p-2 rounded-lg">
+                                                    <pre {...props} />
+                                                </div>
+                                            ),
+                                            code: ({ node, ...props }) => (
+                                                <code className="bg-emerald-600/10 text-black rounded-lg p-1" {...props} />
+                                            ),
+                                        }}
+                                        className='text-sm overflow-hidden leading-7'
+                                    >
+                                        {message.content || ''}
+                                    </ReactMarkdown>
+                                ) : null}
                                 {message.role !== 'user' && generatedCode && (
                                     <a
                                         href={`data:text/plain;charset=utf-8,${encodeURIComponent(generatedCode)}`}
-                                        download={`generated_code.${selectedLanguage}`}
+                                        download={`generated_code.html`}
                                         className="block mt-2 text-center text-blue-500 underline"
                                     >
                                         <Button className='w-full items-center'>
@@ -208,6 +179,7 @@ export default function Code() {
                             </div>
                         ))}
                     </div>
+
 
                 </div>
             </div>

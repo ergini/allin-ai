@@ -49,6 +49,14 @@ const routes = [
         color: "text-blue-300"
     },
     {
+        label: "Website Generation",
+        icon: Code2Icon,
+        href: "/webcreation",
+        // color: "text-yellow-300",
+        textColor: "text-black/90",
+        background: "bg-yellow-300"
+    },
+    {
         label: "Settings",
         icon: Settings2,
         href: "/settings",
@@ -89,10 +97,11 @@ export default function Sidebar({
                             className={cn(
                                 "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition",
                                 pathname === route.href ? "text-white bg-white/10" : "text-zinc-400",
+                                route.background, route.textColor
                             )}
                         >
-                            <div className='flex items-center flex-1'>
-                                <route.icon className={cn('h-5 w-5 mr-3', route.color)} />
+                            <div className={cn('flex items-center flex-1')}>
+                                <route.icon className={cn('h-5 w-5 mr-3', route.color,)} />
                                 {route.label}
                                 {route.language && (
                                     <span className="ml-2 text-xs text-gray-400">
